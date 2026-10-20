@@ -1,7 +1,6 @@
-﻿# Claude Code Stop / Notification hook.
-# - Stop: shows the last assistant message. If it ends with a question, opens a modal
-#   where you can answer directly (the answer is fed back to Claude). Otherwise a
-#   non-blocking tray notification is shown.
+# Claude Code Stop / Notification hook.
+# - Stop: shows a tray notification with the start of the last assistant message,
+#   titled differently when that message ends with a question.
 # - Notification: shows a tray notification with Claude Code's message.
 param(
     [string]$ToastTitle,
@@ -70,89 +69,11 @@ if (-not $last -and $payload.transcript_path -and (Test-Path $payload.transcript
 }
 if (-not $last) { $last = 'Claude has finished and is waiting for your input.' }
 
-# A "simple input" is needed when the final paragraph of the message asks a question
+# Flag the notification when the final paragraph of the message asks a question
 $paragraphs = @($last.Trim() -split '(\r?\n){2,}' | Where-Object { $_.Trim() })
-$tail = if ($paragraphs.Count) { $paragraphs[-1] } else { $last }
-$isQuestion = $tail -match '\?\s*(\*|_|`)*\s*$' -or $tail -match '\?\s*\r?\n'
-$isYesNo = $isQuestion -and $tail -match '(?i)\b(should i|shall i|do you want|would you like|want me to|ok to|okay to|proceed|go ahead|confirm|is that ok|sound good)\b'
+$lastParagraph = if ($paragraphs.Count) { $paragraphs[-1] } else { $last }
+$isQuestion = $lastParagraph -match '\?\s*(\*|_|`)*\s*$' -or $lastParagraph -match '\?\s*\r?\n'
 
-if (-not $isQuestion) {
-    Start-DetachedBalloon "Claude finished ($project)" (Get-Short $last 200)
-    exit 0
-}
-
-# Modal with quick reply
-[System.Windows.Forms.Application]::EnableVisualStyles()
-$form = New-Object System.Windows.Forms.Form
-$form.Text = "Claude needs your input ($project)"
-$form.Size = New-Object System.Drawing.Size(620, 440)
-$form.StartPosition = 'CenterScreen'
-$form.TopMost = $true
-$form.MinimizeBox = $false
-$form.FormBorderStyle = 'Sizable'
-$form.Font = New-Object System.Drawing.Font('Segoe UI', 9.5)
-
-$msgBox = New-Object System.Windows.Forms.TextBox
-$msgBox.Multiline = $true
-$msgBox.ReadOnly = $true
-$msgBox.ScrollBars = 'Vertical'
-$msgBox.Text = ($last -replace '\r?\n', "`r`n")
-$msgBox.Location = New-Object System.Drawing.Point(12, 12)
-$msgBox.Size = New-Object System.Drawing.Size(580, 250)
-$msgBox.Anchor = 'Top,Left,Right,Bottom'
-$form.Controls.Add($msgBox)
-
-$label = New-Object System.Windows.Forms.Label
-$label.Text = 'Your reply (Enter to send, Esc to reply in the terminal instead):'
-$label.AutoSize = $true
-$label.Location = New-Object System.Drawing.Point(12, 270)
-$label.Anchor = 'Left,Bottom'
-$form.Controls.Add($label)
-
-$replyBox = New-Object System.Windows.Forms.TextBox
-$replyBox.Location = New-Object System.Drawing.Point(12, 292)
-$replyBox.Size = New-Object System.Drawing.Size(580, 26)
-$replyBox.Anchor = 'Left,Right,Bottom'
-$form.Controls.Add($replyBox)
-
-$script:reply = $null
-function Add-Button([string]$text, [int]$x, [scriptblock]$onClick) {
-    $btn = New-Object System.Windows.Forms.Button
-    $btn.Text = $text
-    $btn.Location = New-Object System.Drawing.Point($x, 335)
-    $btn.Size = New-Object System.Drawing.Size(110, 32)
-    $btn.Anchor = 'Right,Bottom'
-    $btn.Add_Click($onClick)
-    $form.Controls.Add($btn)
-    return $btn
-}
-
-$x = 482
-$send = Add-Button 'Send' $x { if ($replyBox.Text.Trim()) { $script:reply = $replyBox.Text.Trim(); $form.Close() } }
-$x -= 120
-$dismiss = Add-Button 'Dismiss' $x { $form.Close() }
-if ($isYesNo) {
-    $x -= 120
-    Add-Button 'No' $x { $script:reply = 'No'; $form.Close() } | Out-Null
-    $x -= 120
-    Add-Button 'Yes' $x { $script:reply = 'Yes'; $form.Close() } | Out-Null
-}
-$form.AcceptButton = $send
-$form.CancelButton = $dismiss
-
-# Auto-dismiss after 10 minutes so the session is never stuck behind the modal
-$timer = New-Object System.Windows.Forms.Timer
-$timer.Interval = 600000
-$timer.Add_Tick({ $timer.Stop(); $form.Close() })
-$timer.Start()
-
-$form.Add_Shown({ $form.Activate(); $replyBox.Focus() })
-[System.Media.SystemSounds]::Asterisk.Play()
-[void]$form.ShowDialog()
-$timer.Dispose()
-
-if ($script:reply) {
-    $out = @{ decision = 'block'; reason = "The user replied via the desktop notification: $($script:reply)" } | ConvertTo-Json -Compress
-    [Console]::Out.Write($out)
-}
+$title = if ($isQuestion) { "Claude needs your input ($project)" } else { "Claude finished ($project)" }
+Start-DetachedBalloon $title (Get-Short $last 200)
 exit 0

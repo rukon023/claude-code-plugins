@@ -6,7 +6,7 @@
     {
       "name": "stop-notify",
       "source": "./",
-      "description": "Windows notification when Claude finishes, with a reply modal when it asks a question"
+      "description": "Windows notification with Claude's last message when it finishes or needs your input"
     }
   ]
 }
