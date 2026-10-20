@@ -1,0 +1,12 @@
+{
+  "name": "rukon023",
+  "owner": { "name": "Rukon" },
+  "description": "Claude Code plugins by rukon023",
+  "plugins": [
+    {
+      "name": "stop-notify",
+      "source": "./",
+      "description": "Windows notification when Claude finishes, with a reply modal when it asks a question"
+    }
+  ]
+}

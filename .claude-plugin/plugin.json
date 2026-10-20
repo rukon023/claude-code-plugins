@@ -1,0 +1,9 @@
+{
+  "name": "stop-notify",
+  "version": "0.1.0",
+  "description": "Windows notification when Claude finishes, with a reply modal when it asks a question",
+  "author": { "name": "Rukon" },
+  "repository": "https://github.com/rukon023/claude-stop-notify",
+  "license": "MIT",
+  "keywords": ["notification", "hooks", "windows", "stop"]
+}
