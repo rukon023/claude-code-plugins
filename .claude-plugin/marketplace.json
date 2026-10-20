@@ -1,12 +1,17 @@
 {
-  "name": "rukon023",
+  "name": "rukon-plugins",
   "owner": { "name": "Rukon" },
-  "description": "Claude Code plugins by rukon023",
+  "description": "Claude Code plugins for Windows by rukon023: desktop notifications when Claude is done, and a usage status line",
   "plugins": [
     {
       "name": "stop-notify",
-      "source": "./",
+      "source": "./plugins/stop-notify",
       "description": "Windows notification with Claude's final message when the main session finishes and waits for you"
+    },
+    {
+      "name": "usage-statusline",
+      "source": "./plugins/usage-statusline",
+      "description": "Status line with model, context usage, 5-hour and 7-day rate limit bars with reset times, folder and git branch"
     }
   ]
 }

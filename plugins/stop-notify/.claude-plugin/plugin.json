@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "Windows notification with Claude's final message when the main session finishes and waits for you",
   "author": { "name": "Rukon" },
-  "repository": "https://github.com/rukon023/claude-stop-notify",
+  "repository": "https://github.com/rukon023/claude-code-plugins",
   "license": "MIT",
   "keywords": ["notification", "hooks", "windows", "stop"]
 }

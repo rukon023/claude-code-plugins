@@ -1,0 +1,17 @@
+{
+  "description": "Keeps the status line script up to date in the plugin's data folder and turns the status line on when no other one is configured",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/install.ps1\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,32 +1,22 @@
-# stop-notify
+# rukon-plugins
 
-A Claude Code plugin for Windows that tells you when Claude has finished and is waiting for you.
+Claude Code plugins for Windows. Each one needs only the built-in Windows PowerShell 5.1.
 
-When the main session finishes its work and waits for your next input, you get one tray notification with the start of Claude's final message:
-
-- titled **"Claude finished (project)"**, or
-- titled **"Claude needs your input (project)"** when that message ends with a question.
-
-There is no notification for subagents, for turns that another Stop hook makes Claude continue, or while background work is still running and will wake the session again. Notifications never block the session.
+| Plugin | What it does |
+| --- | --- |
+| [stop-notify](plugins/stop-notify) | A Windows notification with Claude's final message when the main session finishes and waits for you |
+| [usage-statusline](plugins/usage-statusline) | A status line with the model, context usage, 5-hour and 7-day rate limit bars with reset times, the folder and the git branch |
 
 ## Install
 
-At the prompt of a Claude Code terminal session:
+At the prompt of a Claude Code terminal session, install whichever you want:
 
 ```
-/plugin install stop-notify --marketplace rukon023/claude-stop-notify
+/plugin install stop-notify --marketplace rukon023/claude-code-plugins
+/plugin install usage-statusline --marketplace rukon023/claude-code-plugins
 ```
 
-Answer `y` to add the marketplace, then pick a scope.
-
-## Requirements
-
-- Windows with Windows PowerShell 5.1 (built in). Nothing else to install.
-
-## Notes
-
-- "Ends with a question" means the last paragraph of Claude's message ends with a question mark.
-- If you previously added the same hook to `~/.claude/settings.json`, remove it there to avoid getting two notifications.
+Answer `y` to add the marketplace the first time, then pick a scope.
 
 ## License
 
