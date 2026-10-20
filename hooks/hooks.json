@@ -1,20 +1,8 @@
 {
-  "description": "Shows a Windows notification with Claude's last message when it stops, and when it needs permission or an answer",
+  "description": "Shows a Windows notification with Claude's final message when the main session finishes and waits for you",
   "hooks": {
     "Stop": [
       {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -STA -File \"${CLAUDE_PLUGIN_ROOT}/hooks/stop-notify.ps1\"",
-            "timeout": 15
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "permission_prompt|elicitation_dialog",
         "hooks": [
           {
             "type": "command",

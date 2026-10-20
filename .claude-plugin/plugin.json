@@ -1,7 +1,7 @@
 {
   "name": "stop-notify",
-  "version": "0.2.0",
-  "description": "Windows notification with Claude's last message when it finishes or needs your input",
+  "version": "0.3.0",
+  "description": "Windows notification with Claude's final message when the main session finishes and waits for you",
   "author": { "name": "Rukon" },
   "repository": "https://github.com/rukon023/claude-stop-notify",
   "license": "MIT",

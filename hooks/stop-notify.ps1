@@ -1,7 +1,7 @@
-# Claude Code Stop / Notification hook.
-# - Stop: shows a tray notification with the start of the last assistant message,
-#   titled differently when that message ends with a question.
-# - Notification: shows a tray notification with Claude Code's message.
+# Claude Code Stop hook.
+# Shows a tray notification with the start of the main session's final message once
+# Claude has finished and is waiting for the user, titled differently when that
+# message ends with a question.
 param(
     [string]$ToastTitle,
     [string]$ToastText
@@ -51,12 +51,15 @@ try { $payload = $raw | ConvertFrom-Json } catch { exit 0 }
 
 $project = if ($payload.cwd) { Split-Path $payload.cwd -Leaf } else { 'Claude Code' }
 
-if ($payload.hook_event_name -eq 'Notification') {
-    Start-DetachedBalloon "Claude Code ($project)" (Get-Short ([string]$payload.message) 200)
-    exit 0
-}
+# Only notify when the main session is really done and waiting for the user:
+# not for subagents, not when another Stop hook made Claude continue, and not
+# while background work is still running and will wake the session again.
+if ($payload.hook_event_name -ne 'Stop') { exit 0 }
+if ($payload.agent_id) { exit 0 }
+if ($payload.stop_hook_active) { exit 0 }
+if (@($payload.background_tasks).Where({ $_ }).Count -gt 0) { exit 0 }
 
-# Stop event: find the last assistant message
+# Find the last assistant message
 $last = [string]$payload.last_assistant_message
 if (-not $last -and $payload.transcript_path -and (Test-Path $payload.transcript_path)) {
     $lines = Get-Content $payload.transcript_path -Encoding UTF8 -Tail 200

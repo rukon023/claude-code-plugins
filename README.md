@@ -2,11 +2,12 @@
 
 A Claude Code plugin for Windows that tells you when Claude has finished and is waiting for you.
 
-- **Claude finished:** a tray notification titled "Claude finished (project)" with the start of Claude's last message.
-- **Claude's last message ends with a question:** the same notification, titled "Claude needs your input (project)".
-- **Permission prompts and Claude Code questions:** a tray notification with Claude Code's message.
+When the main session finishes its work and waits for your next input, you get one tray notification with the start of Claude's final message:
 
-The notifications never block the session; answer in the terminal as usual.
+- titled **"Claude finished (project)"**, or
+- titled **"Claude needs your input (project)"** when that message ends with a question.
+
+There is no notification for subagents, for turns that another Stop hook makes Claude continue, or while background work is still running and will wake the session again. Notifications never block the session.
 
 ## Install
 
