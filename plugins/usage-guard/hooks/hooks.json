@@ -1,0 +1,42 @@
+{
+  "description": "Stops Claude when the 5-hour or weekly usage limit reaches the threshold, and resumes the task when the 5-hour window resets",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/usage-guard.ps1\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/usage-guard.ps1\" -WaitForReset",
+            "async": true,
+            "asyncRewake": true,
+            "timeout": 19000
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/usage-guard.ps1\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/usage-guard.ps1\" -WaitForReset",
+            "async": true,
+            "asyncRewake": true,
+            "timeout": 19000
+          }
+        ]
+      }
+    ]
+  }
+}

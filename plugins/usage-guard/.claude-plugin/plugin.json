@@ -1,0 +1,24 @@
+{
+  "name": "usage-guard",
+  "version": "0.1.0",
+  "description": "Stops Claude when the 5-hour or weekly usage limit reaches a threshold, and resumes the task when the 5-hour window resets",
+  "author": { "name": "Rukon" },
+  "repository": "https://github.com/rukon023/claude-code-plugins",
+  "license": "MIT",
+  "keywords": ["usage", "rate-limits", "guard", "windows"],
+  "dependencies": ["usage-statusline"],
+  "userConfig": {
+    "threshold": {
+      "type": "number",
+      "title": "Stop at (%)",
+      "description": "Stop Claude when the 5-hour or weekly usage reaches this percentage.",
+      "default": 90
+    },
+    "autoResume": {
+      "type": "boolean",
+      "title": "Resume after the 5-hour reset",
+      "description": "When the 5-hour limit stopped Claude, resume the task automatically once that window resets.",
+      "default": true
+    }
+  }
+}
