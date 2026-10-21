@@ -1,7 +1,7 @@
 {
   "name": "rukon-plugins",
   "owner": { "name": "Rukon" },
-  "description": "Claude Code plugins for Windows by rukon023: desktop notifications when Claude is done, and a usage status line",
+  "description": "Claude Code plugins for Windows by rukon023: desktop notifications when Claude is done, a usage status line, and a usage limit guard",
   "plugins": [
     {
       "name": "stop-notify",
@@ -12,6 +12,11 @@
       "name": "usage-statusline",
       "source": "./plugins/usage-statusline",
       "description": "Status line with model, context usage, 5-hour and 7-day rate limit bars with reset times, folder and git branch"
+    },
+    {
+      "name": "usage-guard",
+      "source": "./plugins/usage-guard",
+      "description": "Stops Claude when the 5-hour or weekly usage limit reaches a threshold, and resumes the task when the 5-hour window resets"
     }
   ]
 }
