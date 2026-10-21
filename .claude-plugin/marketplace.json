@@ -1,6 +1,8 @@
 {
   "name": "rukon-plugins",
-  "owner": { "name": "Rukon" },
+  "owner": {
+    "name": "Rukon"
+  },
   "description": "Claude Code plugins for Windows by rukon023: desktop notifications when Claude is done, a usage status line, and a usage limit guard",
   "plugins": [
     {
@@ -16,7 +18,7 @@
     {
       "name": "usage-guard",
       "source": "./plugins/usage-guard",
-      "description": "Stops Claude when the 5-hour or weekly usage limit reaches a threshold, and resumes the task when the 5-hour window resets"
+      "description": "Stops Claude when the 5-hour or weekly usage limit reaches a threshold, warns every open session, and resumes stopped work when the 5-hour window resets"
     }
   ]
 }

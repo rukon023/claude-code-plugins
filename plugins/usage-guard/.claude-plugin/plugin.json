@@ -1,12 +1,21 @@
 {
   "name": "usage-guard",
-  "version": "0.1.0",
-  "description": "Stops Claude when the 5-hour or weekly usage limit reaches a threshold, and resumes the task when the 5-hour window resets",
-  "author": { "name": "Rukon" },
+  "version": "0.2.0",
+  "description": "Stops Claude when the 5-hour or weekly usage limit reaches a threshold, warns every open session, and resumes stopped work when the 5-hour window resets",
+  "author": {
+    "name": "Rukon"
+  },
   "repository": "https://github.com/rukon023/claude-code-plugins",
   "license": "MIT",
-  "keywords": ["usage", "rate-limits", "guard", "windows"],
-  "dependencies": ["usage-statusline"],
+  "keywords": [
+    "usage",
+    "rate-limits",
+    "guard",
+    "windows"
+  ],
+  "dependencies": [
+    "usage-statusline"
+  ],
   "userConfig": {
     "threshold": {
       "type": "number",
@@ -18,6 +27,18 @@
       "type": "boolean",
       "title": "Resume after the 5-hour reset",
       "description": "When the 5-hour limit stopped Claude, resume the task automatically once that window resets.",
+      "default": true
+    },
+    "resumeWeeklyBelow": {
+      "type": "number",
+      "title": "Resume only if weekly is below (%)",
+      "description": "After the 5-hour reset, resume stopped work only when weekly usage is below this percentage.",
+      "default": 90
+    },
+    "notifyAllSessions": {
+      "type": "boolean",
+      "title": "Warn every open session",
+      "description": "When the threshold is reached, show the warning in every open Claude Code session, not only the one that was working.",
       "default": true
     }
   }

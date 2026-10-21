@@ -4,7 +4,8 @@ Stops Claude before it uses up your Claude subscription's usage limits, and pick
 
 - When the 5-hour or weekly usage reaches the threshold (90% by default), Claude is stopped before its next tool call or prompt, with a message such as `USAGE WARNING: 5-hour limit at 92% (resets Tue 14:00)`.
 - **Keep going anyway:** send a prompt that starts with `ack` (for example `ack finish the tests`). The warning stays quiet until that window resets.
-- **Wait for the reset:** if the 5-hour limit stopped Claude, leave the session open. About a minute after the window resets, Claude resumes the task on its own. It does not resume when the weekly limit is also over the threshold.
+- **Every open session is warned:** when the threshold is reached, each other open Claude Code session shows the same `Operation stopped by hook: USAGE WARNING: …` line, once per limit window, even if it was idle. Claude takes a short turn in each to display it.
+- **Wait for the reset:** if the 5-hour limit stopped Claude in the middle of a task, leave the session open. About a minute after the window resets, Claude resumes the task on its own, as long as weekly usage is below the *Resume only if weekly is below* setting (90% by default). Sessions that were only warned, not stopped mid-task, stay quiet.
 
 ## Install
 
@@ -29,12 +30,16 @@ Set these in the plugin's settings in the `/plugin` menu:
 | --- | --- | --- |
 | Stop at (%) | 90 | The usage percentage at which Claude is stopped |
 | Resume after the 5-hour reset | on | Resume the task automatically once the 5-hour window resets |
+| Resume only if weekly is below (%) | 90 | After the 5-hour reset, resume only when weekly usage is below this percentage |
+| Warn every open session | on | Show the warning in every open session, not only the one that was working |
 
 ## Notes
 
 - Claude Code has to stay open while it waits for the reset. If you close it, nothing resumes.
 - If Claude hits the real usage limit rather than this threshold, Claude Code's built-in `autoContinueAtUsageLimit` setting handles resuming.
-- Acknowledgements are kept in `~/.claude/usage-ack.json`.
+- Acknowledgements are kept in `~/.claude/usage-ack.json` and apply to every session.
+- Each session runs one small background watcher (started at session start, on each prompt and when Claude finishes) that checks the usage figures every 15 seconds. Its state is kept in `~/.claude/usage-watch-*.json`, `usage-notified-*.json` and `usage-stopped-*.json`.
+- The figures come from whichever session's status line updated last, so warnings reach idle sessions as long as one session is active.
 
 ## License
 

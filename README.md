@@ -6,7 +6,7 @@ Claude Code plugins for Windows. Each one needs only the built-in Windows PowerS
 | --- | --- |
 | [stop-notify](plugins/stop-notify) | A Windows notification with Claude's final message when the main session finishes and waits for you |
 | [usage-statusline](plugins/usage-statusline) | A status line with the model, context usage, 5-hour and 7-day rate limit bars with reset times, the folder and the git branch |
-| [usage-guard](plugins/usage-guard) | Stops Claude when the 5-hour or weekly usage reaches a threshold (90% by default), and resumes the task when the 5-hour window resets. Needs usage-statusline |
+| [usage-guard](plugins/usage-guard) | Stops Claude when the 5-hour or weekly usage reaches a threshold (90% by default), warns every open session, and resumes stopped work when the 5-hour window resets and weekly usage allows. Needs usage-statusline |
 
 ## Install
 
