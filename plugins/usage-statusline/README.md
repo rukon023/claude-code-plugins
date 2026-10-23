@@ -3,7 +3,7 @@
 A Claude Code status line for Windows:
 
 ```
-Opus | ctx 42% | 5h ███░░░░░░░ 31% ↻ 14:00 | 7d █░░░░░░░░░ 12% ↻ Mon 09:00 | C:\code\app | ⎇ main
+Opus | ctx 42% | 5h ███░░░░░░░ 31% ↻ 2:00 PM | 7d █░░░░░░░░░ 12% ↻ Mon 9:00 AM | ⎇ main | C:\code\app
 ```
 
 - the model
