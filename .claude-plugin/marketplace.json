@@ -13,7 +13,7 @@
     {
       "name": "usage-statusline",
       "source": "./plugins/usage-statusline",
-      "description": "Status line with model, context usage, 5-hour and 7-day rate limit bars with reset times, folder and git branch"
+      "description": "Status line with model, context usage, 5-hour and 7-day rate limit bars with reset times, git branch and folder"
     },
     {
       "name": "usage-guard",

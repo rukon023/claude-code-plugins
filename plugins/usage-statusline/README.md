@@ -9,7 +9,7 @@ Opus | ctx 42% | 5h ███░░░░░░░ 31% ↻ 14:00 | 7d █░░�
 - the model
 - how much of the context window is used
 - 5-hour and 7-day rate limit usage as bars (green, yellow from 50%, red from 80%) with the local time each one resets
-- the current folder and git branch
+- the git branch and current folder
 
 Rate limit bars appear only on a Claude subscription, once Claude Code has rate limit figures for the session.
 

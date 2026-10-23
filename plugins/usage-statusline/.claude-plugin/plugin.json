@@ -1,7 +1,7 @@
 {
   "name": "usage-statusline",
-  "version": "0.1.0",
-  "description": "Status line with model, context usage, 5-hour and 7-day rate limit bars with reset times, folder and git branch",
+  "version": "0.2.0",
+  "description": "Status line with model, context usage, 5-hour and 7-day rate limit bars with reset times, git branch and folder",
   "author": { "name": "Rukon" },
   "repository": "https://github.com/rukon023/claude-code-plugins",
   "license": "MIT",

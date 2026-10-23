@@ -25,18 +25,18 @@ if ($rl) {
 function ResetAt($win, $fmt) {
   if (-not $win.resets_at) { return "" }
   $t = [DateTimeOffset]::FromUnixTimeSeconds([int64]$win.resets_at).ToLocalTime()
-  return " $esc[90m" + [char]0x21BB + " " + $t.ToString($fmt) + $reset
+  return " $esc[90m" + [char]0x21BB + " " + $t.ToString($fmt, [Globalization.CultureInfo]::InvariantCulture) + $reset
 }
-if ($rl -and $rl.five_hour) { $parts += "5h " + (Bar $rl.five_hour.used_percentage) + (ResetAt $rl.five_hour 'HH:mm') }
-if ($rl -and $rl.seven_day) { $parts += "7d " + (Bar $rl.seven_day.used_percentage) + (ResetAt $rl.seven_day 'ddd HH:mm') }
+if ($rl -and $rl.five_hour) { $parts += "5h " + (Bar $rl.five_hour.used_percentage) + (ResetAt $rl.five_hour 'h:mm tt') }
+if ($rl -and $rl.seven_day) { $parts += "7d " + (Bar $rl.seven_day.used_percentage) + (ResetAt $rl.seven_day 'ddd h:mm tt') }
 
 $dir = $j.workspace.current_dir
 if (-not $dir) { $dir = $j.cwd }
 if ($dir) {
-  $parts += "$esc[34m$dir$reset"
   $branch = & git --no-optional-locks -C $dir symbolic-ref --short HEAD 2>$null
   if (-not $branch) { $branch = & git --no-optional-locks -C $dir rev-parse --short HEAD 2>$null }
   if ($branch) { $parts += "$esc[35m$([char]0x2387) $branch$reset" }
+  $parts += "$esc[34m$dir$reset"
 }
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
