@@ -3,13 +3,15 @@
 A Claude Code status line for Windows:
 
 ```
-Opus | ctx 42% | 5h ███░░░░░░░ 31% ↻ 2:00 PM | 7d █░░░░░░░░░ 12% ↻ Mon 9:00 AM | ⎇ main | C:\code\app
+Opus | ctx 42% | 5h ███░░░░░░░ 31% ↻ 2:00 PM | 7d █░░░░░░░░░ 12% ↻ Mon 9:00 AM | wk ├━━┼━━┼●─┼──┼──┼──┼──┤ 29%
+C:\code\app | ⎇ main
 ```
 
 - the model
 - how much of the context window is used
 - 5-hour and 7-day rate limit usage as bars (green, yellow from 50%, red from 80%) with the local time each one resets
-- the git branch and current folder
+- a weekly timeline (`wk`) showing how far you are through the 7-day window: each `┼` is a day boundary counted from the window start (the reset time minus 7 days), `━` is elapsed time and `●` is now
+- the current folder and git branch, on a second line
 
 Rate limit bars appear only on a Claude subscription, once Claude Code has rate limit figures for the session.
 
