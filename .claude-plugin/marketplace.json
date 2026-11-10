@@ -3,22 +3,34 @@
   "owner": {
     "name": "Rukon"
   },
-  "description": "Claude Code plugins for Windows by rukon023: desktop notifications when Claude is done, a usage status line, and a usage limit guard",
+  "metadata": {
+    "description": "Claude Code plugins for Windows by rukon023: desktop notifications when Claude is done, a usage status line, and a usage limit guard",
+    "version": "1.0.0"
+  },
   "plugins": [
     {
       "name": "stop-notify",
       "source": "./plugins/stop-notify",
-      "description": "Windows notification with Claude's final message when the main session finishes and waits for you"
+      "description": "Windows notification with Claude's final message when the main session finishes and waits for you",
+      "category": "productivity",
+      "tags": ["notification", "hooks", "windows", "powershell"],
+      "homepage": "https://github.com/rukon023/claude-code-plugins/tree/main/plugins/stop-notify"
     },
     {
       "name": "usage-statusline",
       "source": "./plugins/usage-statusline",
-      "description": "Two-line status line with model, context usage, 5-hour and 7-day rate limit bars with reset times, a weekly timeline, then folder and git branch"
+      "description": "Two-line status line with model, context usage, 5-hour and 7-day rate limit bars with reset times, a weekly timeline, then folder and git branch",
+      "category": "productivity",
+      "tags": ["statusline", "usage", "rate-limits", "windows", "powershell"],
+      "homepage": "https://github.com/rukon023/claude-code-plugins/tree/main/plugins/usage-statusline"
     },
     {
       "name": "usage-guard",
       "source": "./plugins/usage-guard",
-      "description": "Stops Claude when the 5-hour or weekly usage limit reaches a threshold, warns every open session, and resumes stopped work when the 5-hour window resets"
+      "description": "Stops Claude when the 5-hour or weekly usage limit reaches a threshold, warns every open session, and resumes stopped work when the 5-hour window resets",
+      "category": "productivity",
+      "tags": ["usage", "rate-limits", "guard", "windows", "powershell"],
+      "homepage": "https://github.com/rukon023/claude-code-plugins/tree/main/plugins/usage-guard"
     }
   ]
 }

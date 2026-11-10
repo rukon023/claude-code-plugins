@@ -14,10 +14,11 @@ There is no notification for subagents, for turns that another Stop hook makes C
 At the prompt of a Claude Code terminal session:
 
 ```
-/plugin install stop-notify --marketplace rukon023/claude-code-plugins
+/plugin marketplace add rukon023/claude-code-plugins
+/plugin install stop-notify@rukon-plugins
 ```
 
-Answer `y` to add the marketplace, then pick a scope.
+Pick a scope when prompted.
 
 ## Requirements
 

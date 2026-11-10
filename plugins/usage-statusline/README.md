@@ -20,10 +20,11 @@ Rate limit bars appear only on a Claude subscription, once Claude Code has rate 
 At the prompt of a Claude Code terminal session:
 
 ```
-/plugin install usage-statusline --marketplace rukon023/claude-code-plugins
+/plugin marketplace add rukon023/claude-code-plugins
+/plugin install usage-statusline@rukon-plugins
 ```
 
-Answer `y` to add the marketplace, then pick a scope. The status line turns on at the next start of Claude Code if you have no other status line configured.
+Pick a scope when prompted. The status line turns on at the next start of Claude Code if you have no other status line configured.
 
 If you already have a status line, replace it with this one by running:
 
