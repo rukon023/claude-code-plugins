@@ -8,6 +8,17 @@ How to install the rukon-plugins marketplace, check that each plugin works, and 
 | [usage-guard](../plugins/usage-guard) | Claude stopped before it uses up the 5-hour or weekly limit, and resumed after the reset | usage-statusline, and a Claude subscription |
 | [stop-notify](../plugins/stop-notify) | A Windows notification when Claude finishes, asks a question or waits for permission | Nothing else |
 
+## Quick start (first time)
+
+If you only want the short version, run these in order. The sections below explain each step.
+
+1. `/plugin marketplace add rukon023/claude-code-plugins`
+2. `/plugin install usage-statusline@rukon-plugins`, then `usage-guard@rukon-plugins`, then `stop-notify@rukon-plugins` (choose **User** scope each time)
+3. Restart Claude Code
+4. Send a message and check the status line, the guard test and the notifications as described in [Check that each plugin works](#4-check-that-each-plugin-works)
+
+Already installed an older version? See [Update](#update).
+
 ## Before you start
 
 - Windows 10 or 11. The plugins use Windows PowerShell 5.1, which is built in, so there is nothing to install. (`pwsh` is not required.)
@@ -98,7 +109,33 @@ usage-statusline will not replace a status line you already have unless you ask.
 
 ## Update
 
-Update the plugins from the `/plugin` menu, then restart Claude Code. The status line script is copied to the plugin's data folder at each start, so it picks up new versions on its own.
+Claude Code does not pick up new versions until you refresh the marketplace, update the plugins and restart. Do all three:
+
+1. **Refresh the marketplace**, so Claude Code sees the new versions. Use the Marketplaces tab of the `/plugin` menu, or in a terminal:
+   ```
+   claude plugin marketplace update rukon-plugins
+   ```
+2. **Update each plugin.** Use the `/plugin` menu, or in a terminal:
+   ```
+   claude plugin update usage-statusline@rukon-plugins
+   claude plugin update usage-guard@rukon-plugins
+   claude plugin update stop-notify@rukon-plugins
+   ```
+3. **Restart Claude Code.** An update only takes effect after a restart. Close every open session and start again, because each session loads the plugins when it starts.
+
+Then check that it worked:
+
+- Run `claude plugin list` and compare each plugin's **Version** with the one in its `plugin.json` on GitHub (for example [stop-notify](../plugins/stop-notify/.claude-plugin/plugin.json)). If the old version still shows, repeat step 1 and 2.
+- The status line script is copied to the plugin's data folder at each start, so usage-statusline picks up its new script on its own after the restart.
+
+### Checks after specific updates
+
+| If you updated to | Check once after restarting |
+| --- | --- |
+| stop-notify 0.4.0 or later | Ask Claude to run a command you have not allowed. A notification titled **Claude needs permission (project)** should appear as soon as the approval prompt shows. If none appears, make sure no other copy of the hook is in `~/.claude/settings.json`, then see [Troubleshooting](#troubleshooting). |
+| usage-statusline 0.3.1 or later | Nothing to do. If you ever run `/usage-statusline:setup`, your `settings.json` backups are now named `settings.json.bak-<date>-<time>`. |
+
+Updating does not remove or replace your `statusLine` entry in `~/.claude/settings.json`.
 
 ## Uninstall
 

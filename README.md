@@ -23,6 +23,19 @@ Pick a scope when prompted (user scope applies to every project), then restart C
 
 The **[setup guide](docs/setup-guide.md)** walks through installing, checking that each plugin works, the usage-guard options, updating, uninstalling and troubleshooting.
 
+## Update
+
+Refresh the marketplace, update the plugins, then restart Claude Code (an update only applies after a restart):
+
+```
+claude plugin marketplace update rukon-plugins
+claude plugin update usage-statusline@rukon-plugins
+claude plugin update usage-guard@rukon-plugins
+claude plugin update stop-notify@rukon-plugins
+```
+
+The same can be done from the `/plugin` menu. Run `claude plugin list` afterwards to check the versions. See [Update](docs/setup-guide.md#update) in the setup guide for what to check after specific versions.
+
 ## License
 
 MIT
