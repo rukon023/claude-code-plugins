@@ -1,6 +1,7 @@
 ---
 description: Make the usage status line your Claude Code status line, replacing any other one
 allowed-tools: PowerShell, Bash
+disable-model-invocation: true
 ---
 
 Run this command to install the usage status line and make it the active one, replacing any status line already configured:

@@ -16,9 +16,17 @@ Copy-Item (Join-Path $PSScriptRoot 'statusline.ps1') $target -Force
 
 $command = 'powershell -NoProfile -ExecutionPolicy Bypass -File "' + ($target -replace '\\', '/') + '"'
 $settingsPath = Join-Path $HOME '.claude\settings.json'
-$settings = if (Test-Path $settingsPath) { Get-Content $settingsPath -Raw -Encoding UTF8 | ConvertFrom-Json } else { New-Object PSObject }
+$utf8 = New-Object System.Text.UTF8Encoding($false)
+$text = if (Test-Path $settingsPath) { [IO.File]::ReadAllText($settingsPath) } else { '' }
+$settings = $null
+if ($text.Trim()) {
+    try { $settings = $text | ConvertFrom-Json } catch {
+        Write-Output "settings.json is not plain JSON (comments or a syntax error?), so it was left alone. Add this to it by hand: `"statusLine`": { `"type`": `"command`", `"command`": $($command | ConvertTo-Json) }"
+        exit 0
+    }
+}
 
-$current = $settings.statusLine
+$current = if ($settings) { $settings.statusLine } else { $null }
 if ($current -and $current.command -eq $command) { exit 0 }
 if ($current -and -not $Force -and $current.command -notlike '*usage-statusline*') {
     if ($env:CLAUDE_PLUGIN_DATA) { exit 0 }
@@ -26,9 +34,38 @@ if ($current -and -not $Force -and $current.command -notlike '*usage-statusline*
     exit 0
 }
 
-Copy-Item $settingsPath "$settingsPath.bak" -Force -ErrorAction SilentlyContinue
-$value = [PSCustomObject]@{ type = 'command'; command = $command }
-$settings | Add-Member -NotePropertyName statusLine -NotePropertyValue $value -Force
-$json = $settings | ConvertTo-Json -Depth 100
-[IO.File]::WriteAllText($settingsPath, $json, (New-Object System.Text.UTF8Encoding($false)))
-Write-Output "Status line set to: $command (previous settings saved to settings.json.bak)"
+# Change only the statusLine entry as text, so the rest of settings.json keeps its
+# formatting, order and characters exactly as they are.
+$nl = if ($text -match "`r`n") { "`r`n" } else { "`n" }
+$entry = '{ "type": "command", "command": ' + ($command | ConvertTo-Json) + ' }'
+if (-not $text.Trim() -or ($settings -and @($settings.PSObject.Properties).Count -eq 0)) {
+    $new = "{$nl  `"statusLine`": $entry$nl}$nl"
+} elseif ($current) {
+    $pattern = '("statusLine"\s*:\s*)\{(?:[^{}"]|"(?:[^"\\]|\\.)*")*\}'
+    $new = [regex]::Replace($text, $pattern, { param($m) $m.Groups[1].Value + $entry }, 'None')
+} else {
+    $comma = if (@($settings.PSObject.Properties).Count -gt 0) { ',' } else { '' }
+    $new = [regex]::Replace($text, '^\s*\{', { param($m) "{$nl  `"statusLine`": $entry$comma" }, 'None')
+}
+
+# Check the edit before writing it: valid JSON, new status line in place, everything else unchanged.
+function Other-Settings($obj) { ($obj | Select-Object -Property * -ExcludeProperty statusLine | ConvertTo-Json -Depth 100 -Compress) }
+try {
+    $check = $new | ConvertFrom-Json
+    $ok = ($check.statusLine.command -eq $command) -and ((Other-Settings $check) -eq (Other-Settings $(if ($settings) { $settings } else { New-Object PSObject })))
+} catch { $ok = $false }
+if (-not $ok) {
+    Write-Output "Could not update settings.json safely, so it was left alone. Set `"statusLine`" by hand to: $entry"
+    exit 0
+}
+
+if ($text) {
+    $backup = "$settingsPath.bak-" + (Get-Date -Format 'yyyyMMdd-HHmmss')
+    Copy-Item $settingsPath $backup -Force
+    # keep the five most recent backups
+    Get-ChildItem "$settingsPath.bak-*" | Sort-Object Name -Descending | Select-Object -Skip 5 | Remove-Item -Force -ErrorAction SilentlyContinue
+}
+New-Item -ItemType Directory -Force (Split-Path $settingsPath -Parent) | Out-Null
+[IO.File]::WriteAllText($settingsPath, $new, $utf8)
+$saved = if ($text) { " (previous settings saved to $(Split-Path $backup -Leaf))" } else { '' }
+Write-Output "Status line set to: $command$saved"

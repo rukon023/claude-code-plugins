@@ -34,7 +34,9 @@ If you already have a status line, replace it with this one by running:
 
 ## How it works
 
-At each start, the plugin copies its script to its data folder (`~/.claude/plugins/data/usage-statusline-<marketplace>/`), a path that stays the same across plugin updates, and `statusLine` in `~/.claude/settings.json` points there. Before changing `settings.json` it saves a copy as `settings.json.bak`.
+At each start, the plugin copies its script to its data folder (`~/.claude/plugins/data/usage-statusline-<marketplace>/`), a path that stays the same across plugin updates, and `statusLine` in `~/.claude/settings.json` points there. It changes only the `statusLine` entry and leaves the rest of the file exactly as it was. Before changing `settings.json` it saves a copy as `settings.json.bak-<date>-<time>` (the five most recent copies are kept). If `settings.json` has comments or a syntax error, or the edit cannot be checked, the file is left alone and you are shown the entry to add by hand.
+
+`/usage-statusline:setup` only runs when you type it; Claude does not run it on its own.
 
 The script also saves the latest rate limit figures to `~/.claude/usage-cache.json`, so other hooks can read them.
 
