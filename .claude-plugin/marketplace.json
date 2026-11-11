@@ -5,16 +5,19 @@
   },
   "metadata": {
     "description": "Claude Code plugins for Windows by rukon023: desktop notifications when Claude is done, a usage status line, and a usage limit guard",
-    "version": "1.1.0"
+    "version": "1.2.0"
+  },
+  "renames": {
+    "stop-notify": "toast-notify"
   },
   "plugins": [
     {
-      "name": "stop-notify",
-      "source": "./plugins/stop-notify",
+      "name": "toast-notify",
+      "source": "./plugins/toast-notify",
       "description": "Windows notifications when Claude finishes and waits for you, and when it is blocked on a permission prompt",
       "category": "productivity",
       "tags": ["notification", "hooks", "windows", "powershell"],
-      "homepage": "https://github.com/rukon023/claude-code-plugins/tree/main/plugins/stop-notify"
+      "homepage": "https://github.com/rukon023/claude-code-plugins/tree/main/plugins/toast-notify"
     },
     {
       "name": "usage-statusline",

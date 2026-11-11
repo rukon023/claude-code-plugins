@@ -1,6 +1,8 @@
-# stop-notify
+# toast-notify
 
 A Claude Code plugin for Windows that tells you when Claude has finished and is waiting for you.
+
+> **Formerly stop-notify.** If you installed it under the old name, install `toast-notify@rukon-plugins` once and remove stop-notify; see [Renamed: stop-notify is now toast-notify](../../docs/setup-guide.md#renamed-stop-notify-is-now-toast-notify).
 
 When the main session finishes its work and waits for your next input, you get one tray notification with the start of Claude's final message:
 
@@ -17,7 +19,7 @@ At the prompt of a Claude Code terminal session:
 
 ```
 /plugin marketplace add rukon023/claude-code-plugins
-/plugin install stop-notify@rukon-plugins
+/plugin install toast-notify@rukon-plugins
 ```
 
 Pick a scope when prompted.
