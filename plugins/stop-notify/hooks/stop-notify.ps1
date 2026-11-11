@@ -30,8 +30,18 @@ function Start-DetachedBalloon([string]$title, [string]$text) {
     ) | Out-Null
 }
 
+# Plain-text version of a markdown message, so toasts do not show **, backticks or links.
+function Remove-Markdown([string]$text) {
+    $t = $text -replace '(?s)```.*?```', ' [code] '          # fenced code blocks
+    $t = $t -replace '!?\[([^\]]*)\]\([^)]*\)', '$1'          # [label](url) and ![alt](url)
+    $t = $t -replace '(?m)^\s{0,3}#{1,6}\s*', ''              # headings
+    $t = $t -replace '(?m)^\s*(?:[-*+]|\d+\.)\s+', ''         # list markers
+    $t = $t -replace '\*\*|`', ''                             # bold and inline code
+    return $t
+}
+
 function Get-Short([string]$text, [int]$max) {
-    $flat = ($text -replace '\s+', ' ').Trim()
+    $flat = ((Remove-Markdown $text) -replace '\s+', ' ').Trim()
     if ($flat.Length -le $max) { return $flat }
     return $flat.Substring(0, $max - 3) + '...'
 }
@@ -50,6 +60,18 @@ $raw = [Console]::In.ReadToEnd()
 try { $payload = $raw | ConvertFrom-Json } catch { exit 0 }
 
 $project = if ($payload.cwd) { Split-Path $payload.cwd -Leaf } else { 'Claude Code' }
+
+# Claude is blocked on a permission prompt (or a question from a tool): tell the user
+# right away, because the Stop event does not fire until the whole turn is over.
+if ($payload.hook_event_name -eq 'Notification') {
+    # idle_prompt and the rest would only repeat the "finished" toast
+    if ($payload.notification_type -notin 'permission_prompt', 'elicitation_dialog') { exit 0 }
+    $message = [string]$payload.message
+    if (-not $message) { $message = 'Claude is waiting for your approval.' }
+    $title = if ($payload.notification_type -eq 'permission_prompt') { "Claude needs permission ($project)" } else { "Claude needs your input ($project)" }
+    Start-DetachedBalloon $title (Get-Short $message 200)
+    exit 0
+}
 
 # Only notify when the main session is really done and waiting for the user:
 # not for subagents, not when another Stop hook made Claude continue, and not
@@ -73,7 +95,7 @@ if (-not $last -and $payload.transcript_path -and (Test-Path $payload.transcript
 if (-not $last) { $last = 'Claude has finished and is waiting for your input.' }
 
 # Flag the notification when the final paragraph of the message asks a question
-$paragraphs = @($last.Trim() -split '(\r?\n){2,}' | Where-Object { $_.Trim() })
+$paragraphs = @($last.Trim() -split '(?:\r?\n){2,}' | Where-Object { $_.Trim() })
 $lastParagraph = if ($paragraphs.Count) { $paragraphs[-1] } else { $last }
 $isQuestion = $lastParagraph -match '\?\s*(\*|_|`)*\s*$' -or $lastParagraph -match '\?\s*\r?\n'
 

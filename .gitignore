@@ -1,0 +1,10 @@
+# PowerShell writes this cache next to scripts when its profile directory is redirected.
+ModuleAnalysisCache
+plugins/**/Microsoft/
+
+# Local backups and editor/OS files
+*.bak
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

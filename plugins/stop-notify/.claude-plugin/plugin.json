@@ -1,7 +1,7 @@
 {
   "name": "stop-notify",
-  "version": "0.3.0",
-  "description": "Windows notification with Claude's final message when the main session finishes and waits for you",
+  "version": "0.4.0",
+  "description": "Windows notifications when Claude finishes and waits for you, and when it is blocked on a permission prompt",
   "author": { "name": "Rukon" },
   "repository": "https://github.com/rukon023/claude-code-plugins",
   "license": "MIT",

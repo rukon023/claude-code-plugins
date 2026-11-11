@@ -12,10 +12,11 @@ Stops Claude before it uses up your Claude subscription's usage limits, and pick
 At the prompt of a Claude Code terminal session:
 
 ```
-/plugin install usage-guard --marketplace rukon023/claude-code-plugins
+/plugin marketplace add rukon023/claude-code-plugins
+/plugin install usage-guard@rukon-plugins
 ```
 
-Answer `y` to add the marketplace, then pick a scope.
+Pick a scope when prompted. Install [usage-statusline](../usage-statusline) first, then restart Claude Code. The [setup guide](../../docs/setup-guide.md) shows how to test that the guard works.
 
 ## Requirements
 

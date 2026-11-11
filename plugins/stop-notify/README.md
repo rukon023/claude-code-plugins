@@ -7,6 +7,8 @@ When the main session finishes its work and waits for your next input, you get o
 - titled **"Claude finished (project)"**, or
 - titled **"Claude needs your input (project)"** when that message ends with a question.
 
+You also get a notification titled **"Claude needs permission (project)"** the moment Claude is blocked on a permission prompt, so you do not have to watch the terminal for approvals. Markdown in the message (bold, backticks, links, headings) is removed so the toast reads as plain text.
+
 There is no notification for subagents, for turns that another Stop hook makes Claude continue, or while background work is still running and will wake the session again. Notifications never block the session.
 
 ## Install
@@ -14,10 +16,11 @@ There is no notification for subagents, for turns that another Stop hook makes C
 At the prompt of a Claude Code terminal session:
 
 ```
-/plugin install stop-notify --marketplace rukon023/claude-code-plugins
+/plugin marketplace add rukon023/claude-code-plugins
+/plugin install stop-notify@rukon-plugins
 ```
 
-Answer `y` to add the marketplace, then pick a scope.
+Pick a scope when prompted.
 
 ## Requirements
 

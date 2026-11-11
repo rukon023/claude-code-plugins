@@ -1,0 +1,38 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject stray tool-generated files
+        run: |
+          stray=$(git ls-files | grep -E '(^|/)(ModuleAnalysisCache|Thumbs\.db|\.DS_Store)$|\.bak$|(^|/)Microsoft/Windows/' || true)
+          if [ -n "$stray" ]; then
+            echo "Unexpected files are tracked:"
+            echo "$stray"
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate marketplace and plugins
+        run: |
+          claude plugin validate . --strict
+          for dir in plugins/*/; do
+            claude plugin validate "$dir" --strict
+          done
