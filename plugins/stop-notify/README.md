@@ -7,6 +7,8 @@ When the main session finishes its work and waits for your next input, you get o
 - titled **"Claude finished (project)"**, or
 - titled **"Claude needs your input (project)"** when that message ends with a question.
 
+You also get a notification titled **"Claude needs permission (project)"** the moment Claude is blocked on a permission prompt, so you do not have to watch the terminal for approvals. Markdown in the message (bold, backticks, links, headings) is removed so the toast reads as plain text.
+
 There is no notification for subagents, for turns that another Stop hook makes Claude continue, or while background work is still running and will wake the session again. Notifications never block the session.
 
 ## Install

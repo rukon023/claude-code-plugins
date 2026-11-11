@@ -11,7 +11,7 @@
     {
       "name": "stop-notify",
       "source": "./plugins/stop-notify",
-      "description": "Windows notification with Claude's final message when the main session finishes and waits for you",
+      "description": "Windows notifications when Claude finishes and waits for you, and when it is blocked on a permission prompt",
       "category": "productivity",
       "tags": ["notification", "hooks", "windows", "powershell"],
       "homepage": "https://github.com/rukon023/claude-code-plugins/tree/main/plugins/stop-notify"
