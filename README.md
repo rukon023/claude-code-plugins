@@ -14,12 +14,14 @@ At the prompt of a Claude Code terminal session, add the marketplace once, then 
 
 ```
 /plugin marketplace add rukon023/claude-code-plugins
-/plugin install stop-notify@rukon-plugins
 /plugin install usage-statusline@rukon-plugins
 /plugin install usage-guard@rukon-plugins
+/plugin install stop-notify@rukon-plugins
 ```
 
-Pick a scope when prompted. From a regular terminal, the same works with `claude plugin marketplace add` and `claude plugin install`.
+Pick a scope when prompted (user scope applies to every project), then restart Claude Code. Install usage-statusline before usage-guard, because the guard reads the figures the status line saves. From a regular terminal, the same works with `claude plugin marketplace add` and `claude plugin install`.
+
+The **[setup guide](docs/setup-guide.md)** walks through installing, checking that each plugin works, the usage-guard options, updating, uninstalling and troubleshooting.
 
 ## License
 

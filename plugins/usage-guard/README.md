@@ -16,7 +16,7 @@ At the prompt of a Claude Code terminal session:
 /plugin install usage-guard@rukon-plugins
 ```
 
-Pick a scope when prompted.
+Pick a scope when prompted. Install [usage-statusline](../usage-statusline) first, then restart Claude Code. The [setup guide](../../docs/setup-guide.md) shows how to test that the guard works.
 
 ## Requirements
 
